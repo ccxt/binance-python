@@ -48,20 +48,26 @@ class pypi {
             `build-backend = "hatchling.build"\n` +
             `\n` + 
             `[tool.hatch.build.targets.wheel]\n` +
-            `packages = ["src/${pypiPackageNameSanitized}"]\n` +
+            `packages = ["src/${this.exchange}"]\n` +
             `\n` +
             `[project]\n` +
             `name = "${pypiPackageNameSanitized}"\n` +
             `version = "` + newVersion + `"\n` +
             `authors = [\n` +
-            `    { name="Example Author", email="author@example.com" },\n` +
+            `    { name="CCXT", email="info@ccxt.trade" },\n` +
             `]\n` +
-            `description = "${this.exchange} exchange api client"\n` +
+            `description = "${this.exchange} crypto exchange api client"\n` +
             `readme = "README.md"\n` +
             `requires-python = ">=3.8"\n` +
             `classifiers = [\n` +
             `    "Programming Language :: Python :: 3",\n` +
             `    "Operating System :: OS Independent",\n` +
+            `    "Intended Audience :: Developers",\n` +
+            `    "Intended Audience :: Financial and Insurance Industry",\n` +
+            `    "Intended Audience :: Information Technology",\n` +
+            `    "Topic :: Software Development :: Build Tools",\n` +
+            `    "Topic :: Office/Business :: Financial :: Investment",\n` +
+            `    "License :: OSI Approved :: MIT License",\n` +
             `]\n` +
             `license = {text = "MIT"}\n` +
             `\n` +

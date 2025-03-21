@@ -16,16 +16,6 @@ pip install __PYTHON_PACKAGE_NAME__
 
 ## Usage
 
-### Async
-
-```Python
-from __PYTHON_PACKAGE_KEY__ import __ExchangeName__Async
-
-async def main():
-    instance = __ExchangeName__Async({})
-    order = await instance.create_order(__EXAMPLE_SYMBOL__, "limit", "buy", 1, 100000)
-```
-
 ### Sync
 
 ```Python
@@ -33,7 +23,28 @@ from __PYTHON_PACKAGE_KEY__ import __ExchangeName__Sync
 
 def main():
     instance = __ExchangeName__Sync({})
-    order =  instance.create_order(__EXAMPLE_SYMBOL__, "limit", "buy", 1, 100000)
+    ob =  instance.fetch_order_book("__EXAMPLE_SYMBOL__")
+    print(ob)
+    #
+    # balance = instance.fetch_balance()
+    # order = instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 100000)
+```
+
+### Async
+
+```Python
+import asyncio
+from __PYTHON_PACKAGE_KEY__ import __ExchangeName__Async
+
+async def main():
+    instance = __ExchangeName__Async({})
+    ob =  await instance.fetch_order_book("__EXAMPLE_SYMBOL__")
+    print(ob)
+    #
+    # balance = await instance.fetch_balance()
+    # order = await instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 100000)
+
+asyncio.run(main())
 ```
 
 ### Websockets
@@ -44,6 +55,8 @@ from __PYTHON_PACKAGE_KEY__ import __ExchangeName__Ws
 async def main():
     instance = __ExchangeName__Ws({})
     while True:
-        orders = await instance.watch_orders(__EXAMPLE_SYMBOL__)
+        ob = await instance.watch_order_book("__EXAMPLE_SYMBOL__")
+        print(ob)
+        # orders = await instance.watch_orders("__EXAMPLE_SYMBOL__")
 ```
 
