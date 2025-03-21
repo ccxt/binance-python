@@ -47,11 +47,11 @@ class pypi {
             `requires = ["hatchling"]\n` +
             `build-backend = "hatchling.build"\n` +
             `\n` + 
-            `[tool.hatch.build.targets.sdist]\n` +
-            `include = ["src/${this.exchange}"]\n` +
+            `[tool.hatch.build.sources]\n` +
+            `directory = "src"\n` +
             `\n` +
             `[tool.hatch.build.targets.wheel]\n` +
-            `packages = ["src/${this.exchange}"]\n` +
+            `packages = ["${this.exchange}"]\n` +
             `\n` +
             `[project]\n` +
             `name = "${pypiPackageName}"\n` +
