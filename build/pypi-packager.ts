@@ -29,7 +29,7 @@ class pypi {
         mkdir (this.tempPyDir + '/tests/'); // just empty folder
         // copy python folder to temp dir
         const pypiPackageName = this.exchangeConfigs[exchange].__PYTHON_PACKAGE_NAME__;
-        const pypiPackageNameSanitized = sanitizePackageName (pypiPackageName);
+        const pypiPackageNameSanitized = this.exchange; //sanitizePackageName (pypiPackageName);
         const pkgDir = this.tempPyDir + '/src/' + pypiPackageNameSanitized;
         mkdir (pkgDir);
         cp (this.rootDir + `/${this.exchange}`, pkgDir);
