@@ -37,11 +37,11 @@ class pypi {
         cp (this.rootDir + `/README.md`, this.tempPyDir + '/README.md');
         // write pyproject.toml
         const verion = this.defineVersion ();
-        fs.writeFileSync(this.tempPyDir + '/pyproject.toml', this.pyprojectTolmContent(pypiPackageNameSanitized, verion));
+        fs.writeFileSync(this.tempPyDir + '/pyproject.toml', this.pyprojectTolmContent(pypiPackageName, verion));
         this.pythonPackageBuild ();
     }
 
-    pyprojectTolmContent(pypiPackageNameSanitized:string, newVersion: string) {
+    pyprojectTolmContent(pypiPackageName:string, newVersion: string) {
         const content = '' +
             `[build-system]\n` +
             `requires = ["hatchling"]\n` +
@@ -51,10 +51,11 @@ class pypi {
             `include = ["src/${this.exchange}"]\n` +
             `\n` +
             `[tool.hatch.build.targets.wheel]\n` +
-            `packages = ["src/${this.exchange}"]\n` +
+            `packages = ["${this.exchange}"]\n` +
+            `src-layout = "src"\n` +
             `\n` +
             `[project]\n` +
-            `name = "${pypiPackageNameSanitized}"\n` +
+            `name = "${pypiPackageName}"\n` +
             `version = "` + newVersion + `"\n` +
             `authors = [\n` +
             `    { name="CCXT", email="info@ccxt.trade" },\n` +
