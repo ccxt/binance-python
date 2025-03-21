@@ -1,13 +1,49 @@
-# about
+# binance-python
+Python SDK (sync and async) for Binance with Rest and WS capabilities.
 
-this is dev.repo, not meant to be used by end users.
+You can check Binance's docs here: [Docs](https://ccxt.com)
 
-# instructions
 
-- At first, generate `Personal Access Token` under `CCXT` org, with the access to this current repository and also to all other repositories (there are around 20 repositories named like: `github.com/ccxt/{exchange}-python`) with the scopes `actions, commit statuses, contents, workflows` and set that value for action secret with the name `API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES`.
+You can check the SDK docs here: [SDK](https://docs.ccxt.com/#/exchanges/binance)
 
-- Then inside `.github/workflows/transfer-all.yml` set the desired array of exchanges in matrix. On `push` event, if commit message contains `[build]`, this repo files will be distributed to those dozen exchange repositories.
+*This package derives from CCXT and allows you to call pretty much every endpoint by either using the unified CCXT API or calling the endpoints directly*
 
-- Immediately, as those repositories get `push` event, they will start build with `.github/workflows/build-single-exchange.yml` flow and each repo (you should set `PYPI_API_SECRET_SP` secret with pypi api key, under each repository) will push a package to pypi.org. Versions are incremental by patch version at this moment.
+## Installation
 
-- All other things are WIP and can be customized.
+```
+pip install binance
+```
+
+## Usage
+
+### Async
+
+```Python
+from binance import BinanceAsync
+
+async def main():
+    instance = BinanceAsync({})
+    order = await instance.create_order(__EXAMPLE_SYMBOL__, "limit", "buy", 1, 100000)
+```
+
+### Sync
+
+```Python
+from binance import BinanceSync
+
+def main():
+    instance = BinanceSync({})
+    order =  instance.create_order(__EXAMPLE_SYMBOL__, "limit", "buy", 1, 100000)
+```
+
+### Websockets
+
+```Python
+from binance import BinanceWs
+
+async def main():
+    instance = BinanceWs({})
+    while True:
+        orders = await instance.watch_orders(__EXAMPLE_SYMBOL__)
+```
+
