@@ -148,7 +148,7 @@ class build {
         const otherStrings = {
             '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
             '__PYTHON_PACKAGE_NAME__': undefined,
-            '__TEST_SYMBOL__': 'BTC/USDC',
+            '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
         for (const key in otherStrings) {

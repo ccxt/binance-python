@@ -10,7 +10,7 @@ from __exchangeName__ import __ExchangeName__Sync
 def main():
     instance = __ExchangeName__Sync({})
     instance.load_markets()
-    symbol = "__TEST_SYMBOL__"
+    symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
     #

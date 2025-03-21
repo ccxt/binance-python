@@ -36,7 +36,7 @@
         },
         "hyperliquid": {
             "__PYTHON_PACKAGE_NAME__": "hyperliquid",
-            "__TEST_SYMBOL__": "BTC/USDC:USDC"
+            "__EXAMPLE_SYMBOL__": "BTC/USDC:USDC"
         },
         "kucoin": {
             "__PYTHON_PACKAGE_NAME__": "kucoin-api"

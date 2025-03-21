@@ -29,7 +29,7 @@ async def my_watch_orderbook(exchange, symbol):
 async def main():
     instance = __ExchangeName__Ws({})
     await instance.load_markets()
-    symbol = "__TEST_SYMBOL__"
+    symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
     ticker = my_watch_ticker_my(instance, symbol)

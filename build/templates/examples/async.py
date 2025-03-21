@@ -14,7 +14,7 @@ from __exchangeName__ import __ExchangeName__Async
 async def main():
     instance = __ExchangeName__Async({})
     await instance.load_markets()
-    symbol = "__TEST_SYMBOL__"
+    symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
     #
