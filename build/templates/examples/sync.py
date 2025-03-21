@@ -13,15 +13,12 @@ def main():
     symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
-    #
     ticker = instance.fetch_ticker(symbol)
     print(ticker)
 
-    # fetch ohlcv
-    #
-    ohlcv = instance.fetch_ohlcv(symbol, "1m")
-    print(ohlcv)
-
+    # create order
+    order = instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 123456.789)
+    print(order)
 
 main()
 

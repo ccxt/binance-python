@@ -17,14 +17,12 @@ async def main():
     symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
-    #
     ticker = await instance.fetch_ticker(symbol)
     print(ticker)
 
-    # fetch ohlcv
-    #
-    ohlcv = await instance.fetch_ohlcv(symbol, "1m")
-    print(ohlcv)
+    # create order
+    order = await instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 123456.789)
+    print(order)
 
     # close after you finish
     await instance.close()
