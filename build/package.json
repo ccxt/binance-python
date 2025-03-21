@@ -1,0 +1,21 @@
+{
+  "name": "build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsx build.ts",
+    "pypi-packager": "tsx pypi-packager.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "*",
+    "path": "*",
+    "semver": "^7.7.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3"
+  }
+}

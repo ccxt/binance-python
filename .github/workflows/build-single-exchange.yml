@@ -1,0 +1,61 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_for_pypi:
+    if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' && contains(github.event.head_commit.message, '[BUILD]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Install npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          cd build
+          npm install
+          npm install typescript
+
+      - name: Build
+        run: |
+          cd build
+          # get repository name and it's first word before hyphen and pass that as argument
+          REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2 | cut -d'-' -f1)
+          npm run build -- $REPO_NAME
+
+      - name: Commit and push back changes
+        run: |
+          chmod +x .github/scripts/pushback.sh
+          .github/scripts/pushback.sh
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+            
+      - name: PyPi packager
+        env:
+          PYPI_API_SECRET_SP: ${{ secrets.PYPI_API_SECRET_SP }}
+        run: |
+          cd build
+          npm run pypi-packager
+
+      - name: PyPi upload
+        run: |
+          cd ./temp_pypi
+          python -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_SECRET_SP }}
