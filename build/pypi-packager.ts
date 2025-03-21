@@ -51,7 +51,8 @@ class pypi {
             `directory = "src"\n` +
             `\n` +
             `[tool.hatch.build.targets.wheel]\n` +
-            `packages = ["${this.exchange}"]\n` +
+            `sources = ["src"]\n` +
+            `only-include = ["src/${this.exchange}"]\n` +
             `\n` +
             `[project]\n` +
             `name = "${pypiPackageName}"\n` +
