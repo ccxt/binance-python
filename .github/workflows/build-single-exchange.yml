@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_for_pypi:
-    if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' && contains(github.event.head_commit.message, '[BUILD]') }}
+    if: ${{ github.event.repository.name != 'ccxt-python-single-exchange' && (contains(github.event.head_commit.message, '[BUILD]') || contains(github.event.head_commit.message, '[PUBLISH]')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,6 +56,7 @@ jobs:
           npm run pypi-packager
 
       - name: PyPi upload
+        if: contains(github.event.head_commit.message, '[PUBLISH]')
         run: |
           cd ./temp_pypi
           python -m twine upload dist/*

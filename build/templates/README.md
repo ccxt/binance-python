@@ -1,10 +1,8 @@
 # __exchangeName__-python
-Python SDK (sync and async) for __ExchangeName__ with Rest and WS capabilities.
-
-You can check __ExchangeName__'s docs here: [Docs](__LINK_TO_OFFICIAL_EXCHANGE_DOCS__)
-
+Python SDK (sync and async) for __ExchangeName__ cryptocurrency exchange with Rest and WS capabilities.
 
 You can check the SDK docs here: [SDK](https://docs.ccxt.com/#/exchanges/__exchangeName__)
+You can check __ExchangeName__'s docs here: [Docs](__LINK_TO_OFFICIAL_EXCHANGE_DOCS__)
 
 *This package derives from CCXT and allows you to call pretty much every endpoint by either using the unified CCXT API or calling the endpoints directly*
 
