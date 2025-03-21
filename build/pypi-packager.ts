@@ -48,7 +48,10 @@ class pypi {
             `build-backend = "hatchling.build"\n` +
             `\n` + 
             `[tool.hatch.build.targets.wheel]\n` +
-            `packages = ["src/${this.exchange}"]\n` +
+            `include = ["src/${this.exchange}"]\n` +
+            `\n` +
+            `[tool.hatch.build.targets.wheel]\n` +
+            `packages = ["${this.exchange}"]\n` +
             `\n` +
             `[project]\n` +
             `name = "${pypiPackageNameSanitized}"\n` +
