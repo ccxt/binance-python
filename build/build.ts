@@ -4,9 +4,8 @@ import path from 'path'
 import { argvs, sanitizePackageName, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
 import { fileURLToPath } from 'url';
+// @ts-expect-error
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-
 
 
 class build {
@@ -18,12 +17,11 @@ class build {
     destinationFolder:string;
     downloadAndDelete:boolean;
 
-    constructor(exchange: string, downloadAndDelete: boolean) {
+    constructor(exchange: string) {
         this.exchange = exchange;
         this.sourceFolder = __dirname +  `/ccxt/`;
         this.destinationFolder = __dirname +  `/../${exchange}/ccxt/`;
-        this.downloadAndDelete = downloadAndDelete;
-        this.init(exchange);
+        this.downloadAndDelete = !argvs.includes('--nodownload');
     }
 
     async downloadCcxtRepo() {
@@ -139,54 +137,60 @@ class build {
         fs.writeFileSync (__dirname + '/../meta.json', stringified);
     }
 
-    replaceGlobalRegexes (text: string, array: any[]) {
+    replaceGlobalRegexes (text: string, array: any[] = []) {
         let newText = text;
         newText = regexAll (newText, [
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
         ]);
-        const otherStrings = {
+        const defaults: any = {
             '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
-            '__PYTHON_PACKAGE_NAME__': undefined,
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
-        for (const key in otherStrings) {
-            const defaultValue = otherStrings[key];
-            let value = exchangeConfig[key] || defaultValue; // at first, read from config, if not, use default
+        for (const key in defaults) {
+            const defaultValue = defaults[key];
+            let value = exchangeConfig[key] || defaultValue; // use default if value not set
             newText = newText.replace(new RegExp(`${key}`, 'g'), value);
         }
-        const sanitized = sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']);
-        newText = newText.replace(new RegExp(`__PYTHON_PACKAGE_KEY__`, 'g'), sanitized);
+        // newText = newText.replace(/__PYTHON_PACKAGE_KEY__/g, sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']));
         return newText;
     }
 
+    commonContentReplace (filePath: string) {
+        let fileContent = fs.readFileSync(filePath, 'utf8');
+        fileContent = this.replaceGlobalRegexes(fileContent);
+        fs.writeFileSync(filePath, fileContent);
+    }
+    
     generateExamples () {
         const destinationDir = __dirname + `/../examples/`;
         cp (__dirname + '/templates/examples/', destinationDir);
         // iterate through files and make replacements
         const files = fs.readdirSync(destinationDir);
         for (const file of files) {
-            const filePath = destinationDir + file;
-            let fileContent = fs.readFileSync(filePath, 'utf8');
-            fileContent = this.replaceGlobalRegexes(fileContent, []);
-            fs.writeFileSync(filePath, fileContent);
+            this.commonContentReplace (destinationDir + file);
         }
     }
 
     generateReadme () {
-        const destinationDir = __dirname + `/../README.md`;
-        cp (__dirname + '/templates/README.md', destinationDir);
-        let fileContent = fs.readFileSync(destinationDir, 'utf8');
-        fileContent = this.replaceGlobalRegexes(fileContent, []);
-        fs.writeFileSync(destinationDir, fileContent);
+        const target = __dirname + `/../README.md`;
+        cp (__dirname + '/templates/README.md', target);
+        this.commonContentReplace (target);
+        this.updateReadmeWithMethods()
     }
 
-    async init (exchange:string) {
+    generatePyprojectToml () {
+        const target = __dirname + `/../pyproject.toml`;
+        cp (__dirname + '/templates/pyproject.toml', target);
+        this.commonContentReplace (target);
+    }
+
+    async init () {
         if (this.downloadAndDelete) {
             await this.downloadCcxtRepo ();
         }
-        this.copyCcxtFiles (exchange);
+        this.copyCcxtFiles (this.exchange);
         await this.setAllExchangesList ();
         await this.creataPackageInitFile ();
 
@@ -204,12 +208,110 @@ class build {
         }
         console.log ("Done!");
     }
+
+
+
+    sortMethods(methods: string[]) {
+        return methods.sort((a, b) => {
+            const aPriority = a.startsWith('fetch') || a.startsWith('create') ? 0 : 1;
+            const bPriority = b.startsWith('fetch') || b.startsWith('create') ? 0 : 1;
+            return aPriority - bPriority || a.localeCompare(b);
+        });
+    }
+
+
+    updateReadme(methods: string[], rawMethods: string[], wsMethods: string[], readmePath: string) {
+        let readmeContent = fs.readFileSync(readmePath, 'utf8');
+
+        const methodsFormatted = methods.map(method => `- \`${method}\``).join('\n');
+        const rawMethodsFormatted = rawMethods.map(method => `- \`${method}\``).join('\n');
+        const wsMethodsFormatted = wsMethods.map(method => `- \`${method}\``).join('\n');
+
+        const newMethodsSection = `### REST Unified\n\n${methodsFormatted}\n`;
+
+        const newWsMethodsSection = `### WS Unified\n\n${wsMethodsFormatted}\n`;
+
+        const newRawMethodsSection = `### REST Raw\n\n${rawMethodsFormatted}\n`;
+
+        // Replace the existing #Methods section
+        const regex = /### REST Unified\n[\s\S]*?(?=\n#|$)/;
+        if (regex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(regex, newMethodsSection);
+        } else {
+            readmeContent += `\n${newMethodsSection}`;
+        }
+
+        // handleRestRaw
+        const rawMethodRegex = /### REST Raw\n[\s\S]*?(?=\n#|$)/
+        if (rawMethodRegex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(rawMethodRegex, newRawMethodsSection);
+        } else {
+            readmeContent += `\n${newRawMethodsSection}`;
+        }
+
+        // handleWs
+        const wsRegex = /### WS Unified\n[\s\S]*?(?=\n#|$)/;
+        if (wsRegex.test(readmeContent)) {
+            readmeContent = readmeContent.replace(wsRegex, newWsMethodsSection);
+        } else {
+            readmeContent += `\n${newWsMethodsSection}`;
+        }
+
+        fs.writeFileSync(readmePath, readmeContent, 'utf8');
+    }
+
+    async updateReadmeWithMethods() {
+        const filePath = this.destinationFolder + '/' + this.exchange + '.py';
+        const wsFilePath = this.destinationFolder + '/pro/' + this.exchange + '.py';
+        const abstractFile = this.destinationFolder + '/abstract/' + this.exchange + '.py';
+        const readme =  __dirname + '/../README.md';
+
+
+        const content = fs.readFileSync(filePath, 'utf8');
+        const wsContent = fs.readFileSync(wsFilePath, 'utf8');
+        const abstractContent = fs.readFileSync(abstractFile, 'utf8');
+        const methodRegex = /def\s+([a-zA-Z_][a-zA-Z0-9_]*)\(([^)]*)\)/g;
+        const abstractRegex = /\s+(\w+)\s=\s\w+\s=\s/g
+        let restMethods: string[] = [];
+        let wsMethods: string[] = [];
+        let rawMethods: string[] = [];
+        let match;
+
+        while ((match = methodRegex.exec(content)) !== null) {
+            const name = match[1];
+            if (name.startsWith('parse') || name.startsWith('sign') || name.startsWith('handle') || name.startsWith('load')) {
+                continue;
+            }
+            restMethods.push(`${name}(${match[2]})`);
+        }
+
+        while ((match = methodRegex.exec(wsContent)) !== null) {
+            const name = match[1];
+            if (name.startsWith('handle') || name.startsWith('parse') || name.startsWith('request') || name.startsWith('ping')) {
+                continue;
+            }
+            wsMethods.push(`${name}(${match[2]})`);
+        }
+
+        while ((match = abstractRegex.exec(abstractContent)) !== null) {
+            const name = match[1];
+            rawMethods.push(`${name}(request)`);
+        }
+
+
+        // console.log(this.sortMethods(re))
+        this.updateReadme(this.sortMethods(restMethods), rawMethods, wsMethods, readme);
+        return restMethods;
+    }
 }
 
 
 // -------------------------------------------------------------------------------- //
 
 
-
-const donwloadAndDelete = !argvs.includes('--nodownload');
-new build(exchangeArgv, donwloadAndDelete);
+const builder = new build(exchangeArgv);
+if (argvs[1] === '--methods') {
+    builder.updateReadmeWithMethods()
+} else {
+    builder.init()
+}

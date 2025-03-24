@@ -23,17 +23,20 @@ jobs:
           npm install
           npm install typescript
 
-      - name: Build
+      - name: Build single exchange
         run: |
           cd build
           # get repository name and it's first word before hyphen and pass that as argument
-          REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2 | cut -d'-' -f1)
-          npm run build -- $REPO_NAME
+          EXCHANGE_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2 | cut -d'-' -f1)
+          npm run build-single-exchange -- $EXCHANGE_NAME
 
       - name: Commit and push back changes
         run: |
-          chmod +x .github/scripts/pushback.sh
-          .github/scripts/pushback.sh
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "pushback" || echo "No changes to commit"
+          git push
 
       - name: Set up Python
         if: contains(github.event.head_commit.message, '[PUBLISH]')

@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  transfer-step:
+    strategy:
+      matrix:
+        exchange_name: ['binance', 'bingx', 'bitget', 'bitmart', 'bitmex', 'bybit', 'coinex', 'cryptocom', 'gate', 'hashkey', 'htx', 'hyperliquid', 'kucoin', 'kucoinfutures', 'mexc', 'okx', 'woo', 'woofipro']
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[TRANSFER]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          persist-credentials: false
+
+      - name: Push to another repo
+        run: |
+          cd .github/scripts/
+          chmod +x ./send-exchange-skeleton-to-repo.sh
+          ./send-exchange-skeleton-to-repo.sh "${{ matrix.exchange_name }}" "${{ github.event.head_commit.message }}"
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.API_TOKEN_FOR_CCXT_SINGLE_EXCHANGES }}
