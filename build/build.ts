@@ -148,12 +148,12 @@ class build {
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
-        for (const key in defaults) {
+        const allReplacements = Object.assign (defaults, exchangeConfig);
+        for (const key in allReplacements) {
             const defaultValue = defaults[key];
             let value = exchangeConfig[key] || defaultValue; // use default if value not set
             newText = newText.replace(new RegExp(`${key}`, 'g'), value);
         }
-        // newText = newText.replace(/__PYTHON_PACKAGE_KEY__/g, sanitizePackageName (exchangeConfig['__PYTHON_PACKAGE_NAME__']));
         return newText;
     }
 
