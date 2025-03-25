@@ -2,17 +2,15 @@ import os
 import sys
 import asyncio
 
-root = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
-sys.path.append(root + '/')
+# if CCXT is included locally
+# sys.path.append(os.path.dirname(os.path.dirname((os.path.abspath(__file__)))) + '/')
 
 from __exchangeName__ import __ExchangeName__Ws
 
-# ********** on Windows, uncomment below ********** 
-# if sys.platform == 'win32':
-# 	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+if sys.platform == 'win32':
+	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-
-async def my_watch_ticker_my(exchange, symbol):
+async def my_watch_ticker(exchange, symbol):
     while (True):
         result = await exchange.watch_ticker(symbol)
         print(result)
@@ -32,7 +30,7 @@ async def main():
     symbol = "__EXAMPLE_SYMBOL__"
 
     # fetch ticker
-    ticker = my_watch_ticker_my(instance, symbol)
+    ticker = my_watch_ticker(instance, symbol)
 
     # fetch orderbook
     ob = my_watch_orderbook(instance, symbol)

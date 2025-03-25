@@ -2,14 +2,13 @@ import os
 import sys
 import asyncio
 
-root = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
-sys.path.append(root + '/')
+# if CCXT is included locally
+# sys.path.append(os.path.dirname(os.path.dirname((os.path.abspath(__file__)))) + '/')
 
 from __exchangeName__ import __ExchangeName__Async
 
-# ********** on Windows, uncomment below ********** 
-# if sys.platform == 'win32':
-# 	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+if sys.platform == 'win32':
+	asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 async def main():
     instance = __ExchangeName__Async({})
