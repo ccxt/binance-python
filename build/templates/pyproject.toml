@@ -61,6 +61,6 @@ type = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ccxt/ccxt"
-Issues = "https://github.com/ccxt/ccxt"
+Homepage = "__HOMEPAGE_URL__"
+Issues = "__HOMEPAGE_URL__"
 Documentation = "https://github.com/ccxt/ccxt/wiki"

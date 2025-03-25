@@ -4,7 +4,6 @@ import path from 'path'
 import { argvs, sanitizePackageName, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
 import { fileURLToPath } from 'url';
-// @ts-expect-error
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
@@ -142,9 +141,10 @@ class build {
         newText = regexAll (newText, [
             ['__exchangeName__', this.exchange],
             ['__ExchangeName__', capitalize(this.exchange)],
+            ['__HOMEPAGE_URL__', 'https://github.com/ccxt/' + this.language + '-' + this.exchange],
         ]);
         const defaults: any = {
-            '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': 'https://ccxt.com',
+            '__LINK_TO_OFFICIAL_EXCHANGE_DOCS__': `https://www.google.com/search?q=google+${this.exchange}+cryptocurrency+exchange+api+docs`,
             '__EXAMPLE_SYMBOL__': 'BTC/USDC',
         };
         const exchangeConfig = this.globalConfigs['exchanges'][this.exchange];
