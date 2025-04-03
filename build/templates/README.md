@@ -73,6 +73,8 @@ async def main():
 
     # once you are done with the exchange
     await instance.close()
+
+asyncio.run(main())
 ```
 
 
