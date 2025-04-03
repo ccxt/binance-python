@@ -5,7 +5,6 @@ import * as semver from 'semver';
 import { argvs, sanitizePackageName, mkdir, jsonFromFile, exchangeArgv, execSync, cp, capitalize, regexAll } from './utils';
 
 import { fileURLToPath } from 'url';
-// @ts-expect-error
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
@@ -87,7 +86,15 @@ class pypi {
         const versions = res.toString().trim();
         const matches = versions.match(/\((\S+)\)/);
         // @ts-ignore
-        const currentVersion = matches[1] || '0.0.1'; // if new package and not found
+        let currentVersion = matches[1];
+        if (!currentVersion) {
+            currentVersion = '0.0.1';
+        } else {
+            // some weird values, e.g. 123.0 or alike
+            if ((currentVersion.match(/\./g) || []).length < 2) {
+                currentVersion += '.0';
+            }
+        }
         const newVersion = semver.inc(currentVersion, 'patch');
         return newVersion;
     }
