@@ -8,7 +8,7 @@ sys.modules['ccxt'] = ccxt_module
 
 # ----------------------------------------------------------------------------
 
-__version__ = '4.4.72'
+__version__ = '4.4.73'
 
 # ----------------------------------------------------------------------------
 
@@ -17,6 +17,5 @@ from ccxt.async_support.base.exchange import Exchange  # noqa: F401
 # CCXT Pro exchanges (now this is mainly used for importing exchanges in WS tests)
 
 from ccxt.pro.binance import binance                                      # noqa: F401
-from ccxt.pro.bitfinex1 import bitfinex1                                  # noqa: F401
 
-exchanges = [    'binance',    'bitfinex1',]
+exchanges = [    'binance',]

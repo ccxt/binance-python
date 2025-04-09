@@ -26,7 +26,7 @@ sys.modules['ccxt'] = ccxt_module
 
 # ----------------------------------------------------------------------------
 
-__version__ = '4.4.72'
+__version__ = '4.4.73'
 
 # ----------------------------------------------------------------------------
 
@@ -88,9 +88,8 @@ from ccxt.base.errors import UnsubscribeError                         # noqa: F4
 from ccxt.base.errors import error_hierarchy                          # noqa: F401
 
 from ccxt.binance import binance                                      # noqa: F401
-from ccxt.bitfinex1 import bitfinex1                                  # noqa: F401
 
-exchanges = [    'binance',    'bitfinex1',]
+exchanges = [    'binance',]
 
 base = [
     'Exchange',
