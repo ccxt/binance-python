@@ -1,4 +1,4 @@
-name: build
+name: build-single-exchange
 on:
   push:
     branches:
@@ -37,7 +37,7 @@ jobs:
           git add README.md
           git add .
           git commit -m "pushback" || echo "No changes to commit"
-          git push
+          git push origin HEAD:main
 
       - name: Set up Python
         if: contains(github.event.head_commit.message, '[PUBLISH]')
@@ -51,7 +51,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install build twine
             
-      - name: PyPi packager
+      - name: PyPi package
         if: contains(github.event.head_commit.message, '[PUBLISH]')
         env:
           PYPI_API_SECRET_SP: ${{ secrets.PYPI_API_SECRET_SP }}

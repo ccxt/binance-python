@@ -1,8 +1,10 @@
 # __exchangeName__-python
 Python SDK (sync and async) for __ExchangeName__ cryptocurrency exchange with Rest and WS capabilities.
 
-You can check the SDK docs here: [SDK](https://docs.ccxt.com/#/exchanges/__exchangeName__)
-You can check __ExchangeName__'s docs here: [Docs](__LINK_TO_OFFICIAL_EXCHANGE_DOCS__)
+- You can check the SDK docs here: [SDK](https://docs.ccxt.com/#/exchanges/__exchangeName__)
+- You can check __ExchangeName__'s docs here: [Docs](__LINK_TO_OFFICIAL_EXCHANGE_DOCS__)
+- Github repo: https://github.com/ccxt/__exchangeName__-python
+- Pypi package: https://pypi.org/project/__PYTHON_PACKAGE_NAME__
 
 
 ## Installation
@@ -25,6 +27,8 @@ def main():
     #
     # balance = instance.fetch_balance()
     # order = instance.create_order("__EXAMPLE_SYMBOL__", "limit", "buy", 1, 100000)
+
+main()
 ```
 
 ### Async
