@@ -173,5 +173,4 @@ cython_debug/
 .pypirc
 
 build/ccxt
-/meta.json
 /build/package-lock.json
