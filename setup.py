@@ -51,12 +51,7 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'Topic :: Office/Business :: Financial :: Investment',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: JavaScript',
@@ -67,20 +62,20 @@ setup(
 
     keywords=package['keywords'],
 
+    python_requires='>=3.10',
+
     install_requires=[
         'setuptools>=60.9.0',
         'certifi>=2018.1.18',
         'requests>=2.18.4',
         'cryptography>=2.6.1',
-        'typing_extensions>=4.4.0'
+        'typing_extensions>=4.4.0',
+        'aiohttp>=3.14.4,<3.15',
+        'aiodns>=1.1.1',
+        'yarl>=1.7.2',
     ],
 
     extras_require={
-        ':python_version>="3.5.2"': [
-            'aiohttp<=3.10.11',
-            'aiodns>=1.1.1',
-            'yarl>=1.7.2',
-        ],
         'qa': [
             'ruff==0.0.292',
             'tox>=4.8.0',
