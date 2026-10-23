@@ -9,12 +9,6 @@
         "binance": {
             "__PYTHON_PACKAGE_NAME__": "binance"
         },
-        "bitmart": {
-            "__PYTHON_PACKAGE_NAME__": "bitmart"
-        },
-        "bitmex": {
-            "__PYTHON_PACKAGE_NAME__": "bitmex-api"
-        },
         "bybit": {
             "__LINK_TO_OFFICIAL_EXCHANGE_DOCS__": "https://bybit.com/apidocs1",
             "__PYTHON_PACKAGE_NAME__": "bybit-api"
@@ -58,6 +52,13 @@
         }
     },
     "keywords": [
+        "crypto",
+        "currencies",
+        "coin",
+        "bitcoin",
+        "btc",
+        "ethereum",
+        "eth",
         "cryptocurrency",
         "exchange", 
         "trading",
